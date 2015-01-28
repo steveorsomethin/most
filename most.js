@@ -3,6 +3,7 @@
 /** @author John Hann */
 
 var Stream = require('./lib/Stream');
+var Publisher = require('./lib/source/Publisher');
 var base = require('./lib/base');
 var core = require('./lib/source/core');
 var from = require('./lib/source/from').from;
@@ -13,6 +14,7 @@ var periodic = require('./lib/source/periodic').periodic;
  * @type {Stream}
  */
 exports.Stream = Stream;
+exports.Publisher = Publisher;
 
 // Add of and empty to constructor for fantasy-land compat
 exports.of       = Stream.of    = core.of;
