@@ -180,6 +180,7 @@ Stream.prototype.startWith = function(x) {
 var transform = require('./lib/combinator/transform');
 
 exports.map      = transform.map;
+exports.select   = transform.map;
 exports.ap       = transform.ap;
 exports.constant = transform.constant;
 exports.tap      = transform.tap;
@@ -190,7 +191,7 @@ exports.doAction = transform.tap;
  * @param {function(*):*} f mapping function
  * @returns {Stream} stream containing items transformed by f
  */
-Stream.prototype.map = function(f) {
+Stream.prototype.map = Stream.prototype.select = function(f) {
 	return transform.map(f, this);
 };
 
@@ -228,7 +229,7 @@ Stream.prototype.tap = Stream.prototype.doAction = function(f) {
 
 var flatMap = require('./lib/combinator/flatMap');
 
-exports.flatMap = exports.chain = flatMap.flatMap;
+exports.flatMap = exports.chain = exports.selectMany = flatMap.flatMap;
 exports.join    = flatMap.join;
 
 /**
@@ -237,7 +238,7 @@ exports.join    = flatMap.join;
  * @param {function(x:*):Stream} f chaining function, must return a Stream
  * @returns {Stream} new stream containing all events from each stream returned by f
  */
-Stream.prototype.flatMap = Stream.prototype.chain = function(f) {
+Stream.prototype.flatMap = Stream.prototype.chain = Stream.prototype.selectMany = function(f) {
 	return flatMap.flatMap(f, this);
 };
 
