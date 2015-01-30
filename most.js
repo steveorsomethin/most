@@ -9,6 +9,10 @@ var core = require('./lib/source/core');
 var from = require('./lib/source/from').from;
 var periodic = require('./lib/source/periodic').periodic;
 
+function identity(v) {
+	return v;
+}
+
 /**
  * Core stream type
  * @type {Stream}
@@ -18,10 +22,13 @@ exports.Publisher = Publisher;
 
 // Add of and empty to constructor for fantasy-land compat
 exports.of       = Stream.of    = core.of;
+exports.returnValue = core.of;
 exports.empty    = Stream.empty = core.empty;
 exports.never    = core.never;
 exports.from     = from;
+exports.fromArray = from;
 exports.periodic = periodic;
+exports.interval = periodic;
 
 //-----------------------------------------------------------------------
 // Creating
@@ -74,6 +81,7 @@ var observe = require('./lib/combinator/observe');
 
 exports.observe = observe.observe;
 exports.forEach = observe.observe;
+exports.subscribe = observe.observe;
 exports.drain   = observe.drain;
 
 /**
@@ -175,6 +183,7 @@ exports.map      = transform.map;
 exports.ap       = transform.ap;
 exports.constant = transform.constant;
 exports.tap      = transform.tap;
+exports.doAction = transform.tap;
 
 /**
  * Transform each value in the stream by applying f to each
@@ -210,7 +219,7 @@ Stream.prototype.constant = function(x) {
  *  return value will be discarded.
  * @returns {Stream} new stream containing the same items as this stream
  */
-Stream.prototype.tap = function(f) {
+Stream.prototype.tap = Stream.prototype.doAction = function(f) {
 	return transform.tap(f, this);
 };
 
@@ -262,6 +271,10 @@ exports.concatMap = concatMap;
 
 Stream.prototype.concatMap = function(f) {
 	return concatMap(f, this);
+};
+
+Stream.prototype.concatAll = function() {
+	return concatMap(identity, this);
 };
 
 //-----------------------------------------------------------------------
@@ -356,6 +369,7 @@ Stream.prototype.switch = Stream.prototype.switchLatest = function() {
 var filter = require('./lib/combinator/filter');
 
 exports.filter     = filter.filter;
+exports.where     = filter.filter;
 exports.distinct   = filter.distinct;
 exports.distinctBy = filter.distinctBy;
 
@@ -366,7 +380,7 @@ exports.distinctBy = filter.distinctBy;
  * @param {function(x:*):boolean} p filtering predicate called for each item
  * @returns {Stream} stream containing only items for which predicate returns truthy
  */
-Stream.prototype.filter = function(p) {
+Stream.prototype.filter = Stream.prototype.where = function(p) {
 	return filter.filter(p, this);
 };
 
