@@ -7,6 +7,7 @@ var Publisher = require('./lib/source/Publisher');
 var base = require('./lib/base');
 var core = require('./lib/source/core');
 var from = require('./lib/source/from').from;
+var range = require('./lib/source/range').range;
 var periodic = require('./lib/source/periodic').periodic;
 
 function identity(v) {
@@ -27,6 +28,7 @@ exports.empty    = Stream.empty = core.empty;
 exports.never    = core.never;
 exports.from     = from;
 exports.fromArray = from;
+exports.range = range;
 exports.periodic = periodic;
 exports.interval = periodic;
 
