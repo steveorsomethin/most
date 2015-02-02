@@ -89,7 +89,7 @@ exports.drain   = observe.drain;
  * @returns {Promise} promise that fulfills when the stream ends, or rejects
  *  if the stream fails with an unhandled error.
  */
-Stream.prototype.observe = Stream.prototype.forEach = function(f) {
+Stream.prototype.observe = Stream.prototype.forEach = Stream.prototype.subscribe = function(f) {
 	return observe.observe(f, this);
 };
 
@@ -220,8 +220,8 @@ Stream.prototype.constant = function(x) {
  *  return value will be discarded.
  * @returns {Stream} new stream containing the same items as this stream
  */
-Stream.prototype.tap = Stream.prototype.doAction = function(f) {
-	return transform.tap(f, this);
+Stream.prototype.tap = Stream.prototype.doAction = function(fEv, fErr, fEnd) {
+	return transform.tap(fEv, fErr, fEnd, this);
 };
 
 //-----------------------------------------------------------------------
