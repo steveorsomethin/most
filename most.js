@@ -91,8 +91,8 @@ exports.drain   = observe.drain;
  * @returns {Promise} promise that fulfills when the stream ends, or rejects
  *  if the stream fails with an unhandled error.
  */
-Stream.prototype.observe = Stream.prototype.forEach = Stream.prototype.subscribe = function(f) {
-	return observe.observe(f, this);
+Stream.prototype.observe = Stream.prototype.forEach = Stream.prototype.subscribe = function(fEv, fErr, fEnd) {
+	return observe.observe(fEv, fErr, fEnd, this);
 };
 
 /**
