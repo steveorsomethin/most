@@ -244,6 +244,10 @@ Stream.prototype.flatMap = Stream.prototype.chain = Stream.prototype.selectMany 
 	return flatMap.flatMap(f, this);
 };
 
+Stream.prototype.mergeAll = function() {
+	return flatMap.flatMap(identity, this);
+};
+
 /**
  * Monadic join. Flatten a Stream<Stream<X>> to Stream<X> by merging inner
  * streams to the outer. Event arrival times are preserved.
